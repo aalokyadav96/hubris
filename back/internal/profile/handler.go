@@ -1,35 +1,61 @@
 package profile
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"naevis/infra"
-	"naevis/internal/profile/usecase"
-
-	"github.com/julienschmidt/httprouter"
 )
 
-// Handler exposes profile HTTP endpoints.
-type Handler struct {
-	useCase usecase.ProfileUseCase
-}
-
-func NewHandler(uc usecase.ProfileUseCase) *Handler {
-	return &Handler{useCase: uc}
-}
-
-func (h *Handler) registerRoutes(router *httprouter.Router, app *infra.Deps) {
+func GetProfiles(app *infra.Deps) http.HandlerFunc {
 	_ = app
-	router.GET("/profiles/health", h.health)
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{"profiles":[]}`))
+	}
 }
 
-func (h *Handler) health(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	status, err := h.useCase.Health(r.Context())
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+func GetProfilesCount(app *infra.Deps) http.HandlerFunc {
+	_ = app
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{"count":0}`))
 	}
+}
 
-	_ = json.NewEncoder(w).Encode(map[string]string{"status": status})
+func CreateProfile(app *infra.Deps) http.HandlerFunc {
+	_ = app
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusCreated)
+		_, _ = w.Write([]byte(`{"message":"created"}`))
+	}
+}
+
+func GetProfile(app *infra.Deps) http.HandlerFunc {
+	_ = app
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{"profile":null}`))
+	}
+}
+
+func EditProfile(app *infra.Deps) http.HandlerFunc {
+	_ = app
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{"message":"updated"}`))
+	}
+}
+
+func DeleteProfile(app *infra.Deps) http.HandlerFunc {
+	_ = app
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte(`{"message":"deleted"}`))
+	}
 }

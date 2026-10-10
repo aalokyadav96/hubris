@@ -1,35 +1,48 @@
 package auth
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"naevis/infra"
-	"naevis/internal/auth/usecase"
-
-	"github.com/julienschmidt/httprouter"
 )
 
-// Handler exposes auth HTTP endpoints.
-type Handler struct {
-	useCase usecase.AuthUseCase
-}
-
-func NewHandler(uc usecase.AuthUseCase) *Handler {
-	return &Handler{useCase: uc}
-}
-
-func (h *Handler) registerRoutes(router *httprouter.Router, app *infra.Deps) {
-	_ = app
-	router.GET("/auth/health", h.health)
-}
-
-func (h *Handler) health(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
-	status, err := h.useCase.Health(r.Context())
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+func stubAuthHandler(msg string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		http.Error(w, msg, http.StatusNotImplemented)
 	}
+}
 
-	_ = json.NewEncoder(w).Encode(map[string]string{"status": status})
+func Register(app *infra.Deps) http.HandlerFunc {
+	_ = app
+	return stubAuthHandler("auth register not implemented")
+}
+
+func Login(app *infra.Deps) http.HandlerFunc {
+	_ = app
+	return stubAuthHandler("auth login not implemented")
+}
+
+func RefreshToken(app *infra.Deps) http.HandlerFunc {
+	_ = app
+	return stubAuthHandler("auth refresh not implemented")
+}
+
+func LogoutUser(app *infra.Deps) http.HandlerFunc {
+	_ = app
+	return stubAuthHandler("auth logout not implemented")
+}
+
+func LogoutAllSessions(app *infra.Deps) http.HandlerFunc {
+	_ = app
+	return stubAuthHandler("auth logout-all not implemented")
+}
+
+func VerifyOTPHandler(app *infra.Deps) http.HandlerFunc {
+	_ = app
+	return stubAuthHandler("auth verify-otp not implemented")
+}
+
+func RequestOTPHandler(app *infra.Deps) http.HandlerFunc {
+	_ = app
+	return stubAuthHandler("auth request-otp not implemented")
 }
