@@ -110,7 +110,14 @@ func New(cfg *config.Config) (*Deps, error) {
 		migrationsPath := env("MIGRATIONS_PATH", "./migrations")
 		absMigrations, err := filepath.Abs(migrationsPath)
 		if err == nil {
-			src := "file://" + absMigrations
+			// Ensure we construct a valid file:// URL on all platforms.
+			// On Windows, absolute paths contain backslashes and a drive
+			// letter (e.g. C:\...), so convert to forward slashes and
+			// prefix with an extra slash so the result becomes
+			// file:///C:/path/to/migrations which is accepted by the
+			// migrate source driver.
+			fixed := filepath.ToSlash(absMigrations)
+			src := "file://" + fixed
 			m, err := migrate.New(src, pgURI)
 			if err != nil {
 				// migration init failures shouldn't block production unless strict mode enabled

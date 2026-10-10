@@ -1,21 +1,11 @@
 package domain
 
-import "time"
+import placesdomain "naevis/internal/places/domain"
 
-// Place is a domain entity for a named location in the system.
-type Place struct {
-	ID          int64     `json:"id"`
-	Name        string    `json:"name"`
-	Description string    `json:"description,omitempty"`
-	Latitude    float64   `json:"latitude,omitempty"`
-	Longitude   float64   `json:"longitude,omitempty"`
-	CreatedAt   time.Time `json:"created_at,omitempty"`
-	UpdatedAt   time.Time `json:"updated_at,omitempty"`
-}
+// Place is the compatibility export for the canonical place domain model.
+type Place = placesdomain.Place
 
-func (p Place) Validate() error {
-	if p.Name == "" {
-		return ErrInvalidPlaceName
-	}
-	return nil
-}
+var (
+	ErrInvalidPlaceName = placesdomain.ErrInvalidPlaceName
+	ErrPlaceNotFound    = placesdomain.ErrPlaceNotFound
+)

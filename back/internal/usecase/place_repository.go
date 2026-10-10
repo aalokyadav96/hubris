@@ -1,65 +1,11 @@
 package usecase
 
-import (
-	"context"
-	"naevis/internal/domain"
-)
+import placesusecase "naevis/internal/places/usecase"
 
-// PlaceRepository defines persistence operations for places.
-type PlaceRepository interface {
-	List(ctx context.Context) ([]domain.Place, error)
-	GetByID(ctx context.Context, id int64) (domain.Place, error)
-	Create(ctx context.Context, place domain.Place) (domain.Place, error)
-	Update(ctx context.Context, id int64, place domain.Place) (domain.Place, error)
-	Delete(ctx context.Context, id int64) error
-}
+// PlaceRepository is the compatibility export for the canonical place repository contract.
+type PlaceRepository = placesusecase.PlaceRepository
 
-// PlaceUseCase defines application-level operations for places.
-type PlaceUseCase interface {
-	List(ctx context.Context) ([]domain.Place, error)
-	GetByID(ctx context.Context, id int64) (domain.Place, error)
-	Create(ctx context.Context, place domain.Place) (domain.Place, error)
-	Update(ctx context.Context, id int64, place domain.Place) (domain.Place, error)
-	Delete(ctx context.Context, id int64) error
-}
+// PlaceUseCase is the compatibility export for the canonical place use case contract.
+type PlaceUseCase = placesusecase.PlaceUseCase
 
-type placeUseCase struct{ repo PlaceRepository }
-
-func NewPlaceUseCase(repo PlaceRepository) PlaceUseCase {
-	return &placeUseCase{repo: repo}
-}
-
-func (u *placeUseCase) List(ctx context.Context) ([]domain.Place, error) {
-	return u.repo.List(ctx)
-}
-
-func (u *placeUseCase) GetByID(ctx context.Context, id int64) (domain.Place, error) {
-	if id <= 0 {
-		return domain.Place{}, domain.ErrPlaceNotFound
-	}
-	return u.repo.GetByID(ctx, id)
-}
-
-func (u *placeUseCase) Create(ctx context.Context, place domain.Place) (domain.Place, error) {
-	if err := place.Validate(); err != nil {
-		return domain.Place{}, err
-	}
-	return u.repo.Create(ctx, place)
-}
-
-func (u *placeUseCase) Update(ctx context.Context, id int64, place domain.Place) (domain.Place, error) {
-	if id <= 0 {
-		return domain.Place{}, domain.ErrPlaceNotFound
-	}
-	if err := place.Validate(); err != nil {
-		return domain.Place{}, err
-	}
-	return u.repo.Update(ctx, id, place)
-}
-
-func (u *placeUseCase) Delete(ctx context.Context, id int64) error {
-	if id <= 0 {
-		return domain.ErrPlaceNotFound
-	}
-	return u.repo.Delete(ctx, id)
-}
+var NewPlaceUseCase = placesusecase.NewPlaceUseCase

@@ -7,8 +7,8 @@ import (
 
 	"naevis/infra"
 	"naevis/infra/db"
-	"naevis/internal/domain"
-	"naevis/internal/usecase"
+	"naevis/internal/places/domain"
+	"naevis/internal/places/usecase"
 	"naevis/middleware"
 
 	"github.com/julienschmidt/httprouter"
