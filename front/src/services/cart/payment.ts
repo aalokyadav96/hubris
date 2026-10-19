@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import { createElement } from "../../components/createElement.js";
-import { showPaymentModal } from "../pay/pay.js";
 import Notify from "../../components/ui/Notify.js";
 import Button from "../../components/base/Button.js";
 import { printInvoice } from "./invoice.js";
@@ -167,11 +166,11 @@ async function createOrder({ items, address, couponCode }: { items: OrderItem[];
 async function processPayment(orderId: string | number, total: number): Promise<any> {
   // FIXED: Propagate error rejections up so the main catch block knows why it failed
   return await showPaymentModal({
-    paymentType: "purchase",
-    entityType: "order",
-    entityId: orderId,
-    entityName: "Order"
   });
+}
+
+async function showPaymentModal(obj:Object): Promise<any> {
+
 }
 
 /* ────────────────────── Main Entry ────────────────────── */

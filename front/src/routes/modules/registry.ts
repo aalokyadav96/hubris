@@ -2,11 +2,7 @@ import { getCurrentAllowedFeatures } from "../../config/domainFeatures.js";
 import { metaGuard } from "../../middleware/middleware.js";
 import { adminRoutes } from "./admin.js";
 import { farmsRoutes } from "./farms.js";
-import { eventsRoutes } from "./events.js";
-import { baitoRoutes } from "./baito.js";
-import { socialRoutes } from "./social.js";
 import { chatsRoutes } from "./chats.js";
-import { placesRoutes } from "./places.js";
 import { coreRoutes } from "./core.js";
 import { legalRoutes } from "./legal.js";
 import { errorRoutes } from "./errors.js";
@@ -24,11 +20,7 @@ interface RegistryRoute {
 const featureModules: Record<string, RegistryRoute[]> = {
   admin: adminRoutes,
   farms: farmsRoutes,
-  events: eventsRoutes,
-  baito: baitoRoutes,
-  social: socialRoutes,
   chats: chatsRoutes,
-  places: placesRoutes
 };
 
 function routeSpecificity(route: RegistryRoute): number {
